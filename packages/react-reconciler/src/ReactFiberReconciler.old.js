@@ -58,6 +58,7 @@ import {
 import {
   requestEventTime,
   requestUpdateLane,
+  requestUpdateLane_getUpdatePriority,
   scheduleUpdateOnFiber,
   scheduleInitialHydrationOnRoot,
   flushRoot,
@@ -310,6 +311,7 @@ export function createHydrationContainer(
   const current = root.current;
   const eventTime = requestEventTime();
   const lane = requestUpdateLane(current);
+  // TODO what to do about isUnknownEventPriority here
   const update = createUpdate(eventTime, lane);
   update.callback =
     callback !== undefined && callback !== null ? callback : null;
