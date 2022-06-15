@@ -931,10 +931,10 @@ function ensureRootIsScheduled(root: FiberRoot, currentTime: number) {
 
     if (
       enableFrameEndScheduling &&
-      newCallbackPriority === DefaultLane &&
-      root.hasUnknownUpdates
+      supportsFrameAlignedTask &&
+      newCallbackPriority === DefaultLane
     ) {
-      // Do nothing, we need to cancel the existing default task and schedule a rAF.
+      // Do nothing, we need to schedule a new rAF.
     } else {
       // The priority hasn't changed. We can reuse the existing task. Exit.
       return;
@@ -946,9 +946,7 @@ function ensureRootIsScheduled(root: FiberRoot, currentTime: number) {
     if (
       enableFrameEndScheduling &&
       supportsFrameAlignedTask &&
-      existingCallbackNode != null &&
-      // TODO: is there a better check for callbackNode type?
-      existingCallbackNode.frameNode != null
+      existingCallbackPriority === DefaultLane
     ) {
       cancelFrameAlignedTask(existingCallbackNode);
     } else {
@@ -1000,8 +998,7 @@ function ensureRootIsScheduled(root: FiberRoot, currentTime: number) {
   } else if (
     enableFrameEndScheduling &&
     supportsFrameAlignedTask &&
-    newCallbackPriority === DefaultLane &&
-    root.hasUnknownUpdates
+    newCallbackPriority === DefaultLane
   ) {
     if (__DEV__ && ReactCurrentActQueue.current !== null) {
       // Inside `act`, use our internal `act` queue so that these get flushed
