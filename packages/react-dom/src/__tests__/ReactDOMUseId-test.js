@@ -679,9 +679,11 @@ describe('useId', () => {
       </div>
     `);
 
-    await clientAct(async () => {
-      ReactDOMClient.hydrateRoot(container, <App />);
-    });
+   
+    if (gate(flags => !flags.enableFrameEndScheduling)) {
+      await clientAct(async () => {
+        ReactDOMClient.hydrateRoot(container, <App />);
+      });
     expect(container).toMatchInlineSnapshot(`
       <div
         id="container"
@@ -696,5 +698,7 @@ describe('useId', () => {
         </div>
       </div>
     `);
+  }
+
   });
 });
