@@ -1280,8 +1280,10 @@ describe('DOMPluginEventSystem', () => {
             );
           }
           const root = ReactDOMClient.createRoot(container);
-          root.render(<Test />);
-          expect(Scheduler).toFlushAndYieldThrough(['Render:0']);
+          await act(async () => {
+            root.render(<Test />);
+          });
+          expect(Scheduler).toHaveYielded(['Render:0']);
           const buttonElement = buttonRef.current;
 
           // Expect the click event to be able to get the latest state value set by mouse over events
