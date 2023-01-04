@@ -146,13 +146,15 @@ function FiberNode(
   this.memoizedState = null;
   this.dependencies = null;
 
+  // 在 HostRoot中Fiber是RootTag 0是Legacy 1是Concurrent
   this.mode = mode;
 
-  // Effects
+  // Effects 渲染器commit用到
   this.flags = NoFlags;
   this.subtreeFlags = NoFlags;
   this.deletions = null;
 
+  // 和优先级调度有关
   this.lanes = NoLanes;
   this.childLanes = NoLanes;
 
